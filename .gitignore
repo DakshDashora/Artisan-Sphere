@@ -1,0 +1,51 @@
+# =========================
+# Environment Variables (CRITICAL)
+# =========================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+Backend/.env
+# =========================
+# Node.js / React Frontend
+# =========================
+node_modules/
+dist/
+build/
+.eslintcache
+
+# NPM/Yarn Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Python / FastAPI Backend
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments
+venv/
+env/
+.venv/
+env.bak/
+venv.bak/
+
+# =========================
+# OS / Editor Files
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
