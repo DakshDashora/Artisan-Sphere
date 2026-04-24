@@ -5,9 +5,13 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from .database import get_db
 from .models import User
+from dotenv import load_dotenv
+from os import getenv
 
-SECRET_KEY="kjdfhehrgliwejrgijergljoiuerhflihewfkjhwkljf"
-ALGORITHM="HS256"
+load_dotenv()
+
+SECRET_KEY=getenv("JWT_SECRET_KEY")
+ALGORITHM="JWT_ALGORITHM"
 
 def create_token(data: dict, expires:timedelta):
     to_encode= data.copy()
