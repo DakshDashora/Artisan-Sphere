@@ -4,12 +4,15 @@ from fastapi.openapi.utils import get_openapi
 from .database import Base, engine
 from .routes import auth, product, api
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+from os import getenv
 
+load_dotenv()
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://artisansphere.vercel.app"],
+    allow_origins=[getenv("FRONTEND_URL")],
     allow_credentials=True,  
     allow_methods=["*"],     
     allow_headers=["*"],    
