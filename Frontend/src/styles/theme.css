@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+  /* ========== COLOR PALETTE (LIGHT MODE - ORIGINAL WHITE NEUMORPHIC) ========== */
+  --as-bg: #eef2f7;
+  --as-surface: var(--as-bg);
+  --as-text: #111827;
+  --as-muted: #6b7280;
+  --as-primary: #050a14;
+  --as-primary-hover: #1f2937;
+  --as-border: #e5e7eb;
+  --as-danger: #ef4444;
+  --as-success: #10b981;
+  
+  /* Neumorphic Shadows for Light Mode */
+  --as-shadow-dark: rgba(0, 0, 0, 0.1);
+  --as-shadow-light: rgba(255, 255, 255, 0.7);
+  --as-shadow-main: 9px 9px 16px var(--as-shadow-dark), -9px -9px 16px var(--as-shadow-light);
+  --as-shadow-inset: inset 6px 6px 12px var(--as-shadow-dark), inset -6px -6px 12px var(--as-shadow-light);
+  --as-shadow-sm: 5px 5px 10px var(--as-shadow-dark), -5px -5px 10px var(--as-shadow-light);
+  --as-shadow-sm-inset: inset 3px 3px 6px var(--as-shadow-dark), inset -3px -3px 6px var(--as-shadow-light);
+
+  /* Glassmorphic values for subelements */
+  --as-glass-bg: rgba(238, 242, 247, 0.85);
+  --as-glass-border: rgba(255, 255, 255, 0.4);
+}
+
+:root[data-theme='dark'] {
+  /* ========== COLOR PALETTE (DARK MODE - ORIGINAL DARK NEUMORPHIC) ========== */
+  --as-bg: #0f1420;
+  --as-surface: var(--as-bg);
+  --as-text: #e5e7eb;
+  --as-muted: #9ca3af;
+  --as-primary: #ff8650;
+  --as-primary-hover: #fa5e1c;
+  --as-border: #1f2937;
+  --as-danger: #dc2626;
+  --as-success: #34d399;
+
+  /* Neumorphic Shadows for Dark Mode */
+  --as-shadow-dark: rgba(0, 0, 0, 0.6);
+  --as-shadow-light: rgba(255, 255, 255, 0.06);
+  --as-shadow-main: 9px 9px 16px var(--as-shadow-dark), -9px -9px 16px var(--as-shadow-light);
+  --as-shadow-inset: inset 6px 6px 12px var(--as-shadow-dark), inset -6px -6px 12px var(--as-shadow-light);
+  --as-shadow-sm: 5px 5px 10px var(--as-shadow-dark), -5px -5px 10px var(--as-shadow-light);
+  --as-shadow-sm-inset: inset 3px 3px 6px var(--as-shadow-dark), inset -3px -3px 6px var(--as-shadow-light);
+
+  /* Glassmorphic values for dark */
+  --as-glass-bg: rgba(15, 20, 32, 0.85);
+  --as-glass-border: rgba(255, 255, 255, 0.04);
+}
+
+/* ========== GLOBAL RESET ========== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-color: var(--as-border);
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background-color: var(--as-bg);
+  color: var(--as-text);
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  display: flex;
+  min-height: 60vh;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--as-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--as-shadow-dark);
+  border-radius: 5px;
+  border: 2px solid var(--as-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--as-muted);
+}
+
+/* ========== GLOBAL ANIMATIONS & SPIN ========== */
+@keyframes as-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes as-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.as-fade-in {
+  animation: as-fade-in 0.4s ease forwards;
+}

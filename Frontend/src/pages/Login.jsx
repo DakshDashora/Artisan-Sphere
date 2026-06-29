@@ -19,7 +19,7 @@ export default function Login() {
     setError(""); // Clear previous errors on new submission
 
     if (!email || !password) {
-      return setError("Please enter both email and password!");
+      return setError(t?.enterEmailAndPassword || "Please enter both email and password!");
     }
 
     setIsLoading(true);
@@ -73,7 +73,7 @@ export default function Login() {
       
     } catch (err) {
       console.error("Login Error:", err);
-      setError("An error occured!\nKyu hua tere kaam ka nahi h!!!!");
+      setError(t?.loginError || "An error occurred during login. Please try again.");
     } finally {
       setIsLoading(false);
     }

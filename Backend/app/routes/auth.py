@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from passlib.hash import bcrypt
 from sqlalchemy import or_
@@ -6,6 +6,7 @@ from app.database import get_db
 from app.models import User
 from app.schemas import *
 from app.utils import *
+from app.services.cloudinary_service import upload_image
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
@@ -78,8 +79,46 @@ def login(user: UserCreate, db: Session = Depends(get_db)):
 
 @router.get("/profile", response_model=ProfileResponse)
 def profile_fetch(db:Session = Depends(get_db) , user:User = Depends(get_current_user)):
-    return ProfileResponse(
-        email = user.email,
-        username = user.username,
-        role = user.role
-    )
+    return user
+
+@router.put("/profile", response_model=ProfileResponse)
+def profile_update(profile_data: ProfileUpdate, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    if profile_data.bio is not None:
+        user.bio = profile_data.bio
+    if profile_data.store_picture is not None:
+        user.store_picture = profile_data.store_picture
+    if profile_data.location is not None:
+        user.location = profile_data.location
+    if profile_data.contact_info is not None:
+        user.contact_info = profile_data.contact_info
+        
+    db.commit()
+    db.refresh(user)
+    return user
+
+@router.post("/profile/upload-picture", response_model=ProfileResponse)
+def profile_upload_picture(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user)
+):
+    try:
+        image_url = upload_image(file.file)
+        user.store_picture = image_url
+        db.commit()
+        db.refresh(user)
+        return user
+    except Exception as e:
+        print("Profile upload picture error:", str(e))
+        raise HTTPException(status_code=500, detail="Failed to upload image. Please try again.")
+
+@router.post("/upgrade", response_model=ProfileResponse)
+def upgrade_to_artisan(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    try:
+        user.role = "artisan"
+        db.commit()
+        db.refresh(user)
+        return user
+    except Exception as e:
+        print("Upgrade error:", str(e))
+        raise HTTPException(status_code=500, detail="Failed to upgrade profile to artisan.")

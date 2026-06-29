@@ -58,7 +58,7 @@ export default function GenerateDescriptionModal({ product, onClose }) {
       setDescriptions({ en: englishDescriptions, hi: hindiDescriptions });
     } catch (err) {
       console.error(err);
-      setError("Failed to fetch descriptions. Ensure your AI backend is running.");
+      setError(t?.failedToFetchDescriptions || "Failed to fetch descriptions. Ensure your AI backend is running.");
     } finally {
       setLoading(false);
     }
@@ -76,7 +76,7 @@ export default function GenerateDescriptionModal({ product, onClose }) {
     }
 
     if (!finalDescription) {
-      setError("Select or add a description first!");
+      setError(t?.selectOrAddDescription || "Select or add a description first!");
       return;
     }
 
@@ -86,14 +86,20 @@ export default function GenerateDescriptionModal({ product, onClose }) {
     try {
       const token = localStorage.getItem("token");
       
-      // 👈 Calling your FastAPI update endpoint
+      const payload = {
+        description: finalDescription,
+      };
+      if (selectedIndex !== null) {
+        payload.description_hi = descriptions.hi[selectedIndex];
+      }
+
       const res = await fetch(`${BASE_URL}/products/updateproduct/${product.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({ description: finalDescription }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -104,7 +110,7 @@ export default function GenerateDescriptionModal({ product, onClose }) {
       
     } catch (err) {
       console.error(err);
-      setError("Failed to save description.");
+      setError(t?.failedToSaveDescription || "Failed to save description.");
     } finally {
       setLoading(false);
       localStorage.removeItem("product_descriptions");
@@ -137,7 +143,7 @@ export default function GenerateDescriptionModal({ product, onClose }) {
         {!descriptions.en.length && (
           <div style={{ textAlign: "center", padding: "20px 0" }}>
             <button className="as-btn" onClick={fetchDescriptions} disabled={loading}>
-              {loading ? (t?.submitting || "Generating...") : "Generate with AI ✨"}
+              {loading ? (t?.submitting || "Generating...") : (t?.generateWithAI || "Generate with AI ✨")}
             </button>
           </div>
         )}
@@ -172,11 +178,11 @@ export default function GenerateDescriptionModal({ product, onClose }) {
             ))}
 
             <div className="as-field" style={{ marginTop: "8px" }}>
-              <label className="as-label">Or write your own:</label>
+              <label className="as-label">{t?.orWriteOwn || "Or write your own:"}</label>
               <textarea
                 className="as-input-field"
                 rows="3"
-                placeholder={lang === "hi" ? "अपना विवरण जोड़ें..." : "Type custom description here..."}
+                placeholder={t?.customDescriptionPlaceholder || "Type custom description here..."}
                 value={customDescription}
                 onChange={(e) => {
                   setCustomDescription(e.target.value);
@@ -192,7 +198,7 @@ export default function GenerateDescriptionModal({ product, onClose }) {
               disabled={loading || (!customDescription.trim() && selectedIndex === null)}
               style={{ justifyContent: "center", marginTop: "8px" }}
             >
-              {loading ? (t?.submitting || "Saving...") : "Save Description"}
+              {loading ? (t?.submitting || "Saving...") : (t?.saveDescription || "Save Description")}
             </button>
             
           </div>

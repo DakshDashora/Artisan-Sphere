@@ -1,1 +1,1 @@
-export  const BASE_URL="https://artisan-sphere.onrender.com";
+export  const BASE_URL= import.meta.env.VITE_BACKEND_URL;

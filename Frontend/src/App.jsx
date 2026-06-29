@@ -15,6 +15,10 @@ import ProductPage from "./pages/ProductPage";
 import SearchResults from "./pages/SearchResult";
 import UnderProduction from "./pages/UnderProduction";
 import NotFound from "./pages/NotFound";
+import Cart from "./pages/Cart";
+import OrderHistory from "./pages/OrderHistory";
+import ManageOrders from "./pages/ManageOrders";
+import Favourites from "./pages/Favourites";
 export default function App()
 {
     return (
@@ -60,18 +64,34 @@ export default function App()
                 }
               />
               <Route
+                path="/artisan/assistant"
+                element={
+                  <ProtectedRoute role="artisan">
+                    <ArtisanProducts />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/artisan/manage-orders"
                 element={
                   <ProtectedRoute role="artisan">
-                    <UnderProduction />
+                    <ManageOrders />
                   </ProtectedRoute>
                 }
               />
               <Route
                 path="/favourites"
                 element={
-                  <ProtectedRoute role="artisan">
-                    <UnderProduction />
+                  <ProtectedRoute>
+                    <Favourites />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/favorites"
+                element={
+                  <ProtectedRoute>
+                    <Favourites />
                   </ProtectedRoute>
                 }
               />
@@ -97,7 +117,7 @@ export default function App()
                 path="/customer/cart"
                 element={
                   <ProtectedRoute  >
-                    <UnderProduction />
+                    <Cart />
                   </ProtectedRoute>
                 }
               />
@@ -105,7 +125,7 @@ export default function App()
                 path="/customer/orders"
                 element={
                   <ProtectedRoute >
-                    <UnderProduction />
+                    <OrderHistory />
                   </ProtectedRoute>
                 }
               />
