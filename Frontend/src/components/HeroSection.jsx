@@ -1,24 +1,55 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
+import { BASE_URL } from "../baseurl";
 
 export default function HeroSection() {
   const { t } = useLanguage();
   const { user } = useAuth();
   const nav = useNavigate();
 
+  const [stats, setStats] = useState({
+    artisans: 480,
+    products: 2700,
+    categories: 36,
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/stats`);
+        if (res.ok) {
+          const data = await res.json();
+          setStats({
+            artisans: data.artisans,
+            products: data.products,
+            categories: data.categories,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load hero section stats:", err);
+      }
+    };
+    fetchStats();
+  }, []);
+
   const handleArtisanClick = () => {
     if (user?.role === "artisan") {
       nav("/artisan/dashboard");
     } else if (user?.role === "customer") {
-      // If they are already a customer, we probably want to send them 
-      // to an upgrade page or profile settings, but for now we'll route to signup 
-      // based on your original logic.
       nav("/signup"); 
     } else {
       nav("/signup");
     }
+  };
+
+  // Format helper to display clean counts
+  const formatCount = (num) => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+    }
+    return num;
   };
 
   return (
@@ -36,7 +67,7 @@ export default function HeroSection() {
             {t?.explore || "Explore Marketplace"}
           </Link>
           <button
-            className="as-btn as-btn-ghost"
+            className="as-btn"
             onClick={handleArtisanClick}
           >
             {t?.becomeArtisan || "Become an Artisan"}
@@ -48,21 +79,21 @@ export default function HeroSection() {
           <div className="as-stat">
             <div>👩‍🎨</div>
             <div>
-              <strong>480+</strong>
+              <strong>{formatCount(stats.artisans)}+</strong>
               <span>{t?.statsArtisans || "Artisans"}</span>
             </div>
           </div>
           <div className="as-stat">
             <div>🖼</div>
             <div>
-              <strong>2.7k</strong>
+              <strong>{formatCount(stats.products)}</strong>
               <span>{t?.statsProducts || "Products"}</span>
             </div>
           </div>
           <div className="as-stat">
             <div>🧶</div>
             <div>
-              <strong>36</strong>
+              <strong>{stats.categories}</strong>
               <span>{t?.statsCraftTypes || "Craft Types"}</span>
             </div>
           </div>

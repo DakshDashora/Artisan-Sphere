@@ -153,7 +153,7 @@ export default function Signup() {
         <div className="as-auth-alt">
           <span className="as-muted">{t?.alreadyHaveAccount || "Already have an account?"}</span>
           <br />
-          <Link className="as-link" to="/login" style={{ display: "inline-block", marginTop: "8px" }}>
+          <Link className="as-btn" to="/login" style={{ marginTop: "12px", width: "100%" }}>
             {t?.login || "Login"}
           </Link>
         </div>

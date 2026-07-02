@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
 import { BASE_URL } from "../baseurl"; 
+import Toast from "../components/Toast";
 
 export default function AddProduct() {
   const { t } = useLanguage();
   const { user } = useAuth();
   const nav = useNavigate();
 
-  // Only the core product details
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("textile");
@@ -18,6 +18,7 @@ export default function AddProduct() {
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [toast, setToast] = useState(null);
 
   const handleFileChange = (e) => {
     const f = e.target.files[0];
@@ -35,13 +36,15 @@ export default function AddProduct() {
     }
     
     if (!user) {
-      alert(t?.userNotLoggedIn || "You must be logged in.");
-      nav("/login");
+      setToast({ message: t?.userNotLoggedIn || "You must be logged in.", type: "error" });
+      setTimeout(() => {
+        nav("/login");
+      }, 1500);
       return;
     }
 
     if (user.role !== "artisan") {
-      return setError("Only artisans can add products. Please upgrade your account.");
+      return setError(t?.onlyArtisansCanAddProducts || "Only artisans can add products. Please upgrade your account.");
     }
 
     try {
@@ -49,12 +52,7 @@ export default function AddProduct() {
       const token = localStorage.getItem("token");
       
       const formData = new FormData();
-      
-      // Append the file
       formData.append("image", file);
-
-      // Append only the text fields needed, matching FastAPI Form(...) parameters
-      // By omitting 'description' and 'story', your database will keep them empty/null
       formData.append("title", title);
       formData.append("price", price);
       formData.append("category", category);
@@ -63,7 +61,6 @@ export default function AddProduct() {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`
-          // Fetch automatically handles the Content-Type for FormData
         },
         body: formData,
       });
@@ -73,16 +70,17 @@ export default function AddProduct() {
         throw new Error(errData.detail || "Failed to add product.");
       }
 
-      alert(t?.productAddedSuccess || "Product added successfully!");
+      setToast({ message: t?.productAddedSuccess || "Product added successfully!", type: "success" });
       
-      // Reset form
       setTitle("");
       setPrice("");
       setCategory("textile");
       setFile(null);
       setPreview("");
       
-      nav("/artisan/dashboard");
+      setTimeout(() => {
+        nav("/artisan/dashboard");
+      }, 1500);
 
     } catch (err) {
       console.error("Upload Error:", err);
@@ -93,7 +91,11 @@ export default function AddProduct() {
   };
 
   return (
-    <div className="as-container as-dashboard">
+    <div className="as-container as-dashboard" style={{ paddingBottom: "40px" }}>
+      {toast && (
+        <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
+      )}
+
       <h1 className="as-section-title">{t?.addProduct || "Add Product"}</h1>
       
       <div className="as-card as-form">

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../baseurl";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext"; // 👈 Unified hook
+import Toast from "./Toast";
 
 export default function CreateStoryPage() {
   const { lang, t } = useLanguage();
@@ -18,6 +19,7 @@ export default function CreateStoryPage() {
   const [story, setStory] = useState(null);
   const [history, setHistory] = useState([]);
   const [count, setCount] = useState(0);
+  const [toast, setToast] = useState(null);
 
   // Translate helper
   async function translate(text, target) {
@@ -148,7 +150,10 @@ export default function CreateStoryPage() {
   // Submit the final story to the Postgres database
   const submitStory = async (e) => {
     e.preventDefault();
-    if (!story) return alert("Please write a story first!");
+    if (!story) {
+      setToast({ message: "Please write a story first!", type: "error" });
+      return;
+    }
 
     try {
       const token = localStorage.getItem("token");
@@ -160,17 +165,18 @@ export default function CreateStoryPage() {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}` 
         },
-        // We just pass the story. FastAPI will update only this field.
-        body: JSON.stringify({ story: story.en }),
+        body: JSON.stringify({ story: story.en, story_hi: story.hi }),
       });
 
       if (!res.ok) throw new Error("Failed to save story to database.");
 
-      alert("Story saved successfully!");
-      navigate("/artisan/products");
+      setToast({ message: "Story saved successfully!", type: "success" });
+      setTimeout(() => {
+        navigate("/artisan/products");
+      }, 1500);
     } catch (err) {
       console.error("Error saving story:", err);
-      alert("Failed to submit story: " + err.message);
+      setToast({ message: "Failed to submit story: " + err.message, type: "error" });
     }
   };
 
@@ -201,6 +207,9 @@ export default function CreateStoryPage() {
 
   return (
     <div className="as-container as-page as-flex-row as-story-page" style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+      {toast && (
+        <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
+      )}
       
       {/* Left side - Product details */}
       <div className="as-product-panel" style={{ flex: '1 1 300px' }}>
@@ -288,7 +297,7 @@ export default function CreateStoryPage() {
             <button className="as-btn" onClick={submitAnswer}>
               {t?.submit || "Send"}
             </button>
-            <button className="as-btn as-btn-ghost" onClick={stopInterview}>
+            <button className="as-btn" onClick={stopInterview}>
               {t?.stopInterview || "Stop"}
             </button>
           </div>
