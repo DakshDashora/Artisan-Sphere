@@ -386,7 +386,7 @@ To get your Cloudinary credentials, sign up at [cloudinary.com](https://cloudina
 | `GROQ_API_KEY` | API key for Groq LLM | `gsk_...` |
 | `JWT_SECRET_KEY` | Secret key for signing JWT tokens | `your-long-random-secret` |
 | `JWT_ALGORITHM` | JWT signing algorithm | `HS256` |
-| `FRONTEND_URL` | Allowed CORS origin | `https://artisan-sphere.vercel.app` |
+| `FRONTEND_URL` | Allowed CORS origin | `https://artisansphere.vercel.app` |
 
 ```env
 # Backend/.env
