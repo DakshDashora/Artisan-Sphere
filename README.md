@@ -4,9 +4,9 @@
 
 ### *A Trusted Full-Stack Marketplace for Artisans & Craft Lovers*
 
-[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-artisan--sphere.vercel.app-brightgreen?style=for-the-badge)](https://artisan-sphere.vercel.app)
+[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-artisan--sphere.vercel.app-brightgreen?style=for-the-badge)](https://artisansphere.vercel.app)
 [![Backend](https://img.shields.io/badge/Backend%20API-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://render.com)
-[![Frontend](https://img.shields.io/badge/Frontend-Vercel-black?style=for-the-badge&logo=vercel)](https://artisan-sphere.vercel.app)
+[![Frontend](https://img.shields.io/badge/Frontend-Vercel-black?style=for-the-badge&logo=vercel)](https://artisansphere.vercel.app)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)

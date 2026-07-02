@@ -7,8 +7,8 @@ load_dotenv()
 groq_client = AsyncGroq(api_key=os.getenv("GROQ_API_KEY"))
 
 # 2. Define your models
-VISION_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct" # For your /generate-description image routing
-TEXT_MODEL = "llama-3.3-70b-versatile"        # For your /story standard text generation
+VISION_MODEL = "qwen/qwen3.6-27b"         # For your /generate-description image routing
+TEXT_MODEL = "openai/gpt-oss-120b"        # For your /story standard text generation
 
 async def generate_text(prompt: str) -> str:
     """Handles standard text generation (like the Q&A loop)"""

@@ -125,7 +125,7 @@ export default function Login() {
         <div className="as-auth-alt">
           <span className="as-muted">{t?.or || "or"}</span>
           <br />
-          <Link className="as-link" to="/signup" style={{ display: "inline-block", marginTop: "8px" }}>
+          <Link className="as-btn" to="/signup" style={{ marginTop: "12px", width: "100%" }}>
             {t?.signUp || "Sign Up"}
           </Link>
         </div>
