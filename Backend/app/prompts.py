@@ -1,14 +1,18 @@
-imageDescriptionPrompt= (  "You are an expert marketing copywriter for an online artisan marketplace. "
-    "Your task is to generate 2–3  engaging, and persuasive product descriptions of about 100 words"
-    "that highlight the craftsmanship, uniqueness, and cultural value of the item.\n\n"
-    "Guidelines:\n"
-    "- Keep each description between 25–40 words.\n"
-    "- Use clear, attractive, and emotional language that appeals to buyers.\n"
-    "- Emphasize that the product is handcrafted by a local artisan.\n"
-    "- Avoid generic phrases like 'buy now' or 'great product'; focus on artistry, authenticity, and story.\n\n"
-    "Output format:\n"
-    "Return each description as a separate line with no numbering, no bullets, no labels. "
-    "Leave a blank line between different options.\n\n")
+imageDescriptionPrompt = (
+    "You are an expert marketing copywriter for an online artisan marketplace.\n"
+    "Write exactly 3 distinct product descriptions for the item shown.\n\n"
+    "Rules for each description:\n"
+    "- 30 to 50 words long.\n"
+    "- Highlight the craftsmanship, uniqueness, and cultural value of the item.\n"
+    "- Emphasize that it is handcrafted by a local artisan.\n"
+    "- Use warm, vivid, emotional language that appeals to buyers.\n"
+    "- Avoid generic filler like 'buy now' or 'great product'.\n\n"
+    "Output rules (MUST follow exactly):\n"
+    "- Do NOT think out loud. Do NOT include any reasoning or <think> tags.\n"
+    "- Respond with ONLY a JSON array of exactly 3 strings, nothing else.\n"
+    "- Each string is one description as plain text (no markdown, no numbering, no labels).\n"
+    '- Example format: ["first description", "second description", "third description"]\n'
+)
 
 
 def storyPrompt(questions, title, url):
