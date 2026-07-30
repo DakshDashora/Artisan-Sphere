@@ -36,7 +36,6 @@ export default function SearchResults() {
 
         setResults(filtered);
       } catch (err) {
-        console.error("Error fetching products:", err);
         setError(t?.errorFetchingProducts || "Failed to load search results.");
       } finally {
         setLoading(false);

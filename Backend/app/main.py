@@ -22,6 +22,10 @@ app.add_middleware(
 # ---------------- Create tables ----------------
 Base.metadata.create_all(bind=engine)
 
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
+
 # ---------------- Include routers ----------------
 app.include_router(auth.router)
 app.include_router(product.router)

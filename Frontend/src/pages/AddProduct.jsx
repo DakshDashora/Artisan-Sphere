@@ -83,7 +83,6 @@ export default function AddProduct() {
       }, 1500);
 
     } catch (err) {
-      console.error("Upload Error:", err);
       setError(err.message || t?.imageUploadFailed || "Image upload failed.");
     } finally {
       setLoading(false);
