@@ -13,11 +13,19 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post("/register", response_model=RegisterOutputSchema)
 def register(user: RegisterInputSchema, db: Session = Depends(get_db)):
 
-    # check if email already exists
-    existing_user = db.query(User).filter(User.email == user.email).first()
+    # check if email or username already exists
+    existing_user = db.query(User).filter(
+        or_(
+            User.email == user.email,
+            User.username == user.username
+        )
+    ).first()
 
     if existing_user:
-        raise HTTPException(status_code=400, detail="User already exists")
+        if existing_user.email == user.email:
+            raise HTTPException(status_code=400, detail="Email already registered")
+        else:
+            raise HTTPException(status_code=400, detail="Username already taken")
 
     try:
         hashed_pw = bcrypt.hash(user.password)
@@ -42,7 +50,8 @@ def register(user: RegisterInputSchema, db: Session = Depends(get_db)):
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print("Registration error:", str(e))
+        raise HTTPException(status_code=500, detail="An error occurred during registration.")
 
 
 

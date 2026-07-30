@@ -30,7 +30,6 @@ export default function ExploreMarketplace() {
         const data = await response.json();
         setProducts(data);
       } catch (err) {
-        console.error("Error fetching products:", err);
         setError(t?.errorFetchingProducts || "Could not load marketplace items.");
       } finally {
         setLoading(false);

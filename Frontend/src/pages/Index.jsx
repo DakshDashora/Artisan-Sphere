@@ -32,7 +32,6 @@ export default function Index() {
       const data = await response.json();
       setProducts(data);
     } catch (err) {
-      console.error("Error fetching products:", err);
     } finally {
       setIsLoading(false);
     }

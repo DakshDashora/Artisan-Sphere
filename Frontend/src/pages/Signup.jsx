@@ -37,7 +37,6 @@ export default function Signup() {
 
     try {
       // 1️⃣ Create user via your FastAPI/custom backend
-      // Note: Assuming the endpoint is /auth/register or /auth/signup. Adjust if needed!
       const response = await fetch(`${BASE_URL}/auth/register`, {
         method: "POST",
         headers: {
@@ -51,34 +50,49 @@ export default function Signup() {
         throw new Error(errorData.detail || errorData.message || "Registration failed.");
       }
 
-      const data = await response.json();
-      
-      // 2️⃣ Auto-login the user
-      // Assuming your backend returns { token: "...", user: {...} } upon successful registration
-      const token = data.token;
-      let userData = data.user;
+      // 2️⃣ Auto-login the user programmatically calling the login API
+      const loginRes = await fetch(`${BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          email_or_username: email, 
+          password: password 
+        }),
+      });
 
-      // Fallback just in case your backend doesn't return the user object immediately
-      if (!userData) {
-        userData = { username, email, role };
+      if (!loginRes.ok) {
+        throw new Error("Registration succeeded, but auto-login failed. Please sign in manually.");
       }
 
-      if (token) {
-        login(userData, token); // Saves session to localStorage via our AuthContext
+      const authData = await loginRes.json();
+      const token = authData.token;
+
+      // 3️⃣ Fetch user profile data to get the role
+      const profileRes = await fetch(`${BASE_URL}/auth/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      let userData;
+      if (profileRes.ok) {
+        userData = await profileRes.json();
       } else {
-        // If the backend doesn't return a token on signup, redirect them to login manually
-        nav("/login");
-        return;
+        userData = { username, email, role }; 
       }
 
-      // 3️⃣ Navigate by role
+      // 4️⃣ Save user and token to context
+      login(userData, token);
+
+      // 5️⃣ Navigate by role
       if (role === "artisan") {
         nav("/artisan/dashboard");
       } else {
         nav("/");
       }
     } catch (err) {
-      console.error("Signup Error:", err);
       setError(err.message);
     } finally {
       setIsLoading(false);

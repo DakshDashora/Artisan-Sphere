@@ -80,7 +80,7 @@ class OrderItem(Base):
     __tablename__ = "order_items"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     order_id = Column(UUID(as_uuid=True), ForeignKey("orders.id", ondelete="CASCADE"), nullable=False)
-    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"), nullable=False)
+    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
     quantity = Column(Integer, nullable=False)
     price_at_purchase = Column(Float, nullable=False)
 
