@@ -72,7 +72,6 @@ export default function Login() {
       }
       
     } catch (err) {
-      console.error("Login Error:", err);
       setError(t?.loginError || "An error occurred during login. Please try again.");
     } finally {
       setIsLoading(false);
