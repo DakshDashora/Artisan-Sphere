@@ -38,12 +38,12 @@ async def _create(model: str, messages: list, max_tokens: int) -> str:
         response = await groq_client.chat.completions.create(**kwargs)
     return clean_think_tags(response.choices[0].message.content)
 
-async def generate_text(prompt: str) -> str:
+async def generate_text(prompt: str, max_tokens: int = 1500) -> str:
     """Handles standard text generation (like the Q&A loop)"""
     return await _create(
         TEXT_MODEL,
         [{"role": "user", "content": prompt}],
-        max_tokens=1500,
+        max_tokens=max_tokens,
     )
 
 async def generate_with_image(prompt: str, image_url: str) -> str:

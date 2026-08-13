@@ -47,7 +47,10 @@ async def translate_helper(text: str, target_language: str) -> str:
     try:
         target_lang_clean = target_language.strip().lower()
         if "hindi" in target_lang_clean or "hi" == target_lang_clean:
-            lang_instruction = "Translate the following English text strictly into natural Hindi using the Devanagari script. Do not output English letters, Russian characters, Chinese characters, or any other script except Devanagari. Do not include any pronunciation guides, translator explanations, quotes, or conversational filler. Output ONLY the clean Hindi translation."
+            lang_instruction = (
+                "Translate the following text into natural, fluent Hindi using the Devanagari script. "
+                "Output ONLY the Hindi translation. Do not include explanations, notes, or English words."
+            )
         else:
             lang_instruction = f"Translate the following text into {target_language}. Respond ONLY with the translated text. Do not include any quotes, markdown formatting, or conversational filler."
 
@@ -55,7 +58,7 @@ async def translate_helper(text: str, target_language: str) -> str:
             f"{lang_instruction}\n\n"
             f"Text to translate: {text}"
         )
-        translated_text = await generate_text(prompt)
+        translated_text = await generate_text(prompt, max_tokens=300)
         # Clean quotes if model wrapped it
         clean_text = translated_text.strip()
         if clean_text.startswith('"') and clean_text.endswith('"'):
